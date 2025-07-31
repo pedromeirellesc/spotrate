@@ -22,10 +22,9 @@ class ReviewPolicy
 
     public function create(User $user, Place $place): bool
     {
-        // return !empty($user) && !Review::where('place_id', $place->id)
-        //     ->where('user_id', $user->id)
-        //     ->exists();
-        return true;
+        return !empty($user) && !Review::where('place_id', $place->id)
+            ->where('user_id', $user->id)
+            ->exists();
     }
 
     public function update(User $user, Review $review): bool

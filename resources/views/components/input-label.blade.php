@@ -1,7 +1,7 @@
 @props(['value', 'class' => ''])
 
 @php
-    $attributes = $attributes->class( $class ? $class : 'block font-medium text-sm text-secondary dark:text-secondary ')
+    $attributes = $attributes->class( $class ?: 'block font-medium text-sm text-secondary');
 @endphp
 
 <label {{ $attributes }}>
