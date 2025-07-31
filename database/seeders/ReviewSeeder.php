@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Place;
+use App\Models\Review;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class PlaceSeeder extends Seeder
+class ReviewSeeder extends Seeder
 {
     public function run(): void
     {
-        Place::factory(10)->create();
+        Review::factory(10)->create();
     }
 }

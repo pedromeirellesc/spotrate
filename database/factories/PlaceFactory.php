@@ -16,15 +16,10 @@ class PlaceFactory extends Factory
             'name' => $this->faker->company,
             'description' => $this->faker->paragraph,
             'address' => $this->faker->address,
-            'city' => $this->faker->city,
-            'state' => $this->faker->state,
-            'country' => $this->faker->country,
             'instagram' => $this->faker->userName,
             'whatsapp' => $this->faker->phoneNumber,
             'website' => $this->faker->url,
-            'created_by' => function () {
-                return User::factory()->create()->id;
-            },
+            'created_by' => User::factory()->create()->id,
             'updated_by' => null,
             'deleted_by' => null,
         ];

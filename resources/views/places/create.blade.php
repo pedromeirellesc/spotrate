@@ -27,27 +27,12 @@
             </div>
 
             <div>
-                <x-input-label for="city" :value="__('City')" />
-                <x-text-input id="city" class="block mt-1 w-full" type="text" name="city" :value="old('city')" />
-            </div>
-
-            <div>
-                <x-input-label for="state" :value="__('State')" />
-                <x-text-input id="state" class="block mt-1 w-full" type="text" name="state" :value="old('state')" />
-            </div>
-
-            <div>
-                <x-input-label for="country" :value="__('Country')" />
-                <x-text-input id="country" class="block mt-1 w-full" type="text" name="country" :value="old('country')" />
-            </div>
-
-            <div>
-                <x-input-label for="instagram" :value="__('Instagram (link or @)')" />
+                <x-input-label for="instagram" :value="__('Instagram')" />
                 <x-text-input id="instagram" class="block mt-1 w-full" type="text" name="instagram" :value="old('instagram')" />
             </div>
 
             <div>
-                <x-input-label for="whatsapp" :value="__('WhatsApp (number or link)')" />
+                <x-input-label for="whatsapp" :value="__('WhatsApp')" />
                 <x-text-input id="whatsapp" class="block mt-1 w-full" type="text" name="whatsapp" :value="old('whatsapp')" />
             </div>
 

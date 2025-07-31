@@ -33,9 +33,6 @@ test('create place as a admin', function () {
         'description' => 'This is a test place.',
         'location' => 'Test Location',
         'address' => '123 Test St',
-        'city' => 'Test City',
-        'state' => 'Test State',
-        'country' => 'Test Country',
     ]);
 
     $response->assertRedirect('/places');
@@ -64,9 +61,6 @@ test('update place as a admin', function () {
         'description' => 'This is an updated place.',
         'location' => 'Updated Location',
         'address' => '456 Updated St',
-        'city' => 'Updated City',
-        'state' => 'Updated State',
-        'country' => 'Updated Country',
     ]);
 
     $response->assertRedirect('/places');
@@ -96,9 +90,6 @@ test('non-admin user or non-creator cannot update a place', function () {
         'name' => 'Unauthorized Update',
         'description' => 'This update should not be allowed.',
         'address' => 'Unauthorized Address',
-        'city' => 'Unauthorized City',
-        'state' => 'Unauthorized State',
-        'country' => 'Unauthorized Country',
     ]);
 
     $response->assertForbidden();
@@ -125,10 +116,7 @@ test('validation errors when creating a place', function () {
     $response = $this->post('/places', [
         'name' => '',
         'address' => '',
-        'city' => '',
-        'state' => '',
-        'country' => '',
     ]);
 
-    $response->assertSessionHasErrors(['name', 'address', 'city', 'state', 'country']);
+    $response->assertSessionHasErrors(['name', 'address']);
 });

@@ -1,3 +1,80 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    background-color: #161c1f;
+    color: #edecec;
+  }
+
+  p {
+    @apply text-white text-opacity-80;
+  }
+
+  html,
+  body {
+    overflow-y: auto;
+    min-height: 100%;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-4 py-2 rounded transition hover:bg-primary-dark font-medium;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-700 text-white px-4 py-2 rounded transition hover:bg-gray-600 font-medium;
+  }
+
+  .heading-main {
+    @apply text-4xl font-bold mb-4 text-white;
+  }
+
+  .subtitle-main {
+    @apply text-lg mb-8 text-gray-300;
+  }
+
+  .card {
+    @apply bg-gray-800 text-gray-100 rounded-lg shadow p-8;
+  }
+
+  .btn-main {
+    @apply text-white px-6 py-3 rounded font-medium text-lg shadow transition;
+  }
+}
+
+@layer utilities {
+
+  .container-responsive {
+    @apply w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .bg-primary {
+    background-color: #052722;
+  }
+
+  .bg-primary-dark {
+    background-color: #edecec;
+  }
+
+  .text-primary {
+    color: #000000;
+  }
+
+  .text-secondary {
+    color: #edecec;
+  }
+
+  .border-primary {
+    border-color: #edecec;
+  }
+
+  .reviews-list {
+    @apply mt-4;
+    background-color: #edecec;
+  }
+
+}

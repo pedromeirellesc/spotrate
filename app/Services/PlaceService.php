@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
-use App\Contract\PlaceRepositoryInterface;
+use App\Contracts\PlaceRepositoryInterface;
+use App\Models\Place;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Request;
 
 class PlaceService
@@ -10,20 +12,19 @@ class PlaceService
 
     public function __construct(private PlaceRepositoryInterface $placeRepository) {}
 
-    public function getAllPlaces(array $requestParams = [])
+    public function getAllPlaces(array $requestParams = []): LengthAwarePaginator
     {
-        return $this->placeRepository->findAll($requestParams);
+        $places = $this->placeRepository->findAll($requestParams);
+
+        return $places;
     }
 
-    public function createPlace(array $data)
+    public function createPlace(array $data): Place
     {
         $userData = [
             'name' => data_get($data, 'name'),
             'description' => data_get($data, 'description'),
             'address' => data_get($data, 'address'),
-            'city' => data_get($data, 'city'),
-            'state' => data_get($data, 'state'),
-            'country' => data_get($data, 'country'),
             'instagram' => data_get($data, 'instagram'),
             'whatsapp' => data_get($data, 'whatsapp'),
             'website' => data_get($data, 'website'),
@@ -33,15 +34,12 @@ class PlaceService
         return $this->placeRepository->create($userData);
     }
 
-    public function updatePlace($place, array $data)
+    public function updatePlace($place, array $data): bool
     {
         $userData = [
             'name' => data_get($data, 'name'),
             'description' => data_get($data, 'description'),
             'address' => data_get($data, 'address'),
-            'city' => data_get($data, 'city'),
-            'state' => data_get($data, 'state'),
-            'country' => data_get($data, 'country'),
             'instagram' => data_get($data, 'instagram'),
             'whatsapp' => data_get($data, 'whatsapp'),
             'website' => data_get($data, 'website'),
@@ -51,12 +49,20 @@ class PlaceService
         return $this->placeRepository->update($place, $userData);
     }
 
-    public function deletePlace($place)
+    public function deletePlace($place): bool
     {
         $userData = [
             'deleted_by' => Request::user()->id,
         ];
 
         return $this->placeRepository->delete($place, $userData);
+    }
+
+    public function show(Place $place)
+    {
+        $place = $place->load(['reviews']);
+        $place->loadAvg('reviews', 'rating');
+
+        return $place;
     }
 }
