@@ -44,7 +44,7 @@ jobs:
         run: npm run build
 
       - name: Run code style chech with Pint
-        run: ./vendor/bin/pint --test
+        run: ./vendor/bin/pint --preset psr12--test
 
       - name: Run tests
         run: php artisan test
