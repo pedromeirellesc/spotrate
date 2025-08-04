@@ -5,8 +5,6 @@ namespace App\Policies;
 use App\Models\Place;
 use App\Models\Review;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Log;
 
 class ReviewPolicy
 {

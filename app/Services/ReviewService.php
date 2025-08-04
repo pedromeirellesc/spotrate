@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Request;
 
 class ReviewService
 {
-
-    public function __construct(private ReviewRepositoryInterface $reviewRepository) {}
+    public function __construct(private ReviewRepositoryInterface $reviewRepository)
+    {
+    }
 
     public function create(array $data): Review
     {

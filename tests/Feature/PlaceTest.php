@@ -65,7 +65,7 @@ test('update place as a admin', function () {
 
     $response->assertRedirect('/places');
     $this->assertDatabaseHas('places', ['name' => 'Updated Place', 'updated_by' => $user->id]);
-}); 
+});
 
 test('delete place as a admin', function () {
     $user = User::factory()->create(['role' => 'admin']);
@@ -78,7 +78,7 @@ test('delete place as a admin', function () {
     $response->assertRedirect('/places');
 
     $this->assertSoftDeleted('places', ['id' => $place->id]);
-}); 
+});
 
 test('non-admin user or non-creator cannot update a place', function () {
     $user = User::factory()->create(['role' => 'user']);

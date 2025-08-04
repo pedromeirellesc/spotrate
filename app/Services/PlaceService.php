@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Request;
 
 class PlaceService
 {
-
-    public function __construct(private PlaceRepositoryInterface $placeRepository) {}
+    public function __construct(private PlaceRepositoryInterface $placeRepository)
+    {
+    }
 
     public function getAllPlaces(array $requestParams = []): LengthAwarePaginator
     {

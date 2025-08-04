@@ -6,19 +6,24 @@ use App\Contracts\ReviewRepositoryInterface;
 use App\Models\Review;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ReviewRepository implements ReviewRepositoryInterface {
+class ReviewRepository implements ReviewRepositoryInterface
+{
+    public function __construct(private Review $review)
+    {
+    }
 
-    public function __construct(private Review $review) {}
-
-    public function create(array $data): Review {
+    public function create(array $data): Review
+    {
         return $this->review->create($data);
     }
 
-    public function update(Review $review, array $data): bool {
+    public function update(Review $review, array $data): bool
+    {
         return $review->update($data);
     }
 
-    public function delete(Review $review, array $data = []): bool {
+    public function delete(Review $review, array $data = []): bool
+    {
         return $review->delete($data);
     }
 

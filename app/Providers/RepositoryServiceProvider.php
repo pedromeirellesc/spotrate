@@ -16,5 +16,7 @@ class RepositoryServiceProvider extends \Illuminate\Support\ServiceProvider
         );
     }
 
-    public function boot(): void {}
+    public function boot(): void
+    {
+    }
 }

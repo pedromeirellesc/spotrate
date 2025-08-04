@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Place;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class PlacePolicy
 {
@@ -26,28 +25,28 @@ class PlacePolicy
     public function update(User $user, Place $place): bool
     {
         return $user->id == $place->user_id || $user->isAdmin()
-            ? true 
+            ? true
             : false;
     }
 
     public function delete(User $user, Place $place): bool
     {
         return $user->id == $place->user_id || $user->isAdmin()
-            ? true 
+            ? true
             : false;
     }
 
     public function restore(User $user, Place $place): bool
     {
         return $user->id == $place->user_id || $user->isAdmin()
-            ? true 
+            ? true
             : false;
     }
 
     public function forceDelete(User $user, Place $place): bool
     {
         return $user->id == $place->user_id || $user->isAdmin()
-            ? true 
+            ? true
             : false;
     }
 }

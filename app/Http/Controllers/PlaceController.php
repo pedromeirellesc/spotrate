@@ -14,7 +14,6 @@ use Illuminate\View\View;
 
 class PlaceController extends Controller
 {
-
     use AuthorizesRequests;
 
     public function __construct(private PlaceService $placeService, private ReviewService $reviewService)

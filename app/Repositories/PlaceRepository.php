@@ -8,8 +8,9 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PlaceRepository implements PlaceRepositoryInterface
 {
-
-    public function __construct(private Place $place) {}
+    public function __construct(private Place $place)
+    {
+    }
 
     public function create(array $data): Place
     {

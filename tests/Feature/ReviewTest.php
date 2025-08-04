@@ -6,7 +6,7 @@ use App\Models\User;
 test('create a review', function () {
     $user = User::factory()->create();
     $place = Place::factory()->create();
-   
+
     $response = $this->actingAs($user)->post(route('reviews.store'), [
         'rating' => 5,
         'comment' => 'Great place!',
