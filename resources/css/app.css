@@ -3,21 +3,15 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
-    background-color: #161c1f;
-    color: #edecec;
-  }
+    html {
+        font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+        background-color: #161c1f;
+        color: #edecec;
+    }
 
-  p {
-    @apply text-white text-opacity-80;
-  }
-
-  html,
-  body {
-    overflow-y: auto;
-    min-height: 100%;
-  }
+    p {
+        @apply text-white text-opacity-80;
+    }
 }
 
 @layer components {
@@ -60,21 +54,21 @@
     background-color: #edecec;
   }
 
-  .text-primary {
-    color: #000000;
-  }
+    .text-primary {
+        color: #000000;
+    }
 
-  .text-secondary {
-    color: #edecec;
-  }
+    .text-secondary {
+        color: #edecec;
+    }
 
-  .border-primary {
-    border-color: #edecec;
-  }
+    .border-primary {
+        border-color: #edecec;
+    }
 
-  .reviews-list {
-    @apply mt-4;
-    background-color: #edecec;
-  }
+    .reviews-list {
+        @apply mt-4;
+        background-color: #edecec;
+    }
 
 }
