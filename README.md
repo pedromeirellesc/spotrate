@@ -2,15 +2,14 @@
 
 SpotRate é uma aplicação web para avaliação de locais.
 
-## Stack
-
-- **Backend:** PHP 8.3, Laravel
-- **Frontend:** Vite, Tailwind CSS, Alpine.js
-- **Database:** MySQL 8.0
-- **Cache:** Redis
-- **Web Server:** Nginx
-- **Containerization:** Docker
-- **Tests:** Pest
+- **Laravel**
+- **Tailwind**
+- **Alpine.js**
+- **MySQL**
+- **Redis**
+- **Nginx**
+- **Docker**
+- **Pest**
 
 ### Instalação
 
@@ -50,7 +49,7 @@ SpotRate é uma aplicação web para avaliação de locais.
     docker-compose exec node npm install
     ```
 
-## Uso
+### Acessar a aplicação
 
 -   **URL:** [http://localhost:8000](http://localhost:8000)
 
@@ -59,7 +58,7 @@ Para compilar os assets, execute o seguinte comando fora do container:
 npm run build
 ```
 
-## Rodar os testes
+### Rodar os testes
 
 Para rodar os testes, execute o seguinte comando dentro do container:
 ```bash

@@ -4,10 +4,14 @@ namespace App\Repositories;
 
 use App\Contracts\PlaceRepositoryInterface;
 use App\Models\Place;
+use App\Traits\CacheableRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PlaceRepository implements PlaceRepositoryInterface
 {
+
+    use CacheableRepository;
+
     public function __construct(private Place $place)
     {
     }
@@ -29,16 +33,24 @@ class PlaceRepository implements PlaceRepositoryInterface
 
     public function findById(int $id): Place
     {
-        return $this->place->findOrFail($id);
+        $cacheKey = $this->makeCacheKey('place', $id);
+
+        return $this->remember($cacheKey, 3600, function () use ($id) {
+            return $this->place->withAvg('reviews', 'rating')->findOrFail($id);
+        });
     }
 
     public function findAll(array $requestParams = []): LengthAwarePaginator
     {
         $perPage = $requestParams['per_page'] ?? 10;
 
-        return $this->place->withAvg('reviews', 'rating')
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
+        $cacheKey = $this->makeCacheKey('places_all', $requestParams);
+
+        return $this->remember($cacheKey, 3600, function () use ($perPage) {
+            return $this->place->withAvg('reviews', 'rating')
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage);
+        });
     }
 
 }
