@@ -51,4 +51,9 @@ class ReviewService
 
         return $this->reviewRepository->findByPlace($placeId, $perPage);
     }
+
+    public function getReviewById(int $id): Review
+    {
+        return $this->reviewRepository->findById($id);
+    }
 }

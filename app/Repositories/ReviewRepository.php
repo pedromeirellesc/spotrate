@@ -9,7 +9,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ReviewRepository implements ReviewRepositoryInterface
 {
-
     use CacheableRepository;
 
     public function __construct(private Review $review)
@@ -65,5 +64,14 @@ class ReviewRepository implements ReviewRepositoryInterface
             $cachedData['current_page'],
             ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
+    }
+
+    public function findById(int $id): Review
+    {
+        $cacheKey = $this->makeCacheKey('review', $id);
+
+        return $this->remember($cacheKey, 3600, function () use ($id) {
+            return $this->review->with(['user'])->findOrFail($id);
+        });
     }
 }

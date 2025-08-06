@@ -41,15 +41,19 @@ class ReviewController extends Controller
             ->with('success', 'Review created successfully.');
     }
 
-    public function edit(Review $review): View
+    public function edit(int $id): View
     {
+        $review = $this->reviewService->getReviewById($id);
+
         $this->authorize('update', $review);
 
         return view('reviews.edit', ['review' => $review]);
     }
 
-    public function update(ReviewRequest $request, Review $review): RedirectResponse
+    public function update(ReviewRequest $request, int $id): RedirectResponse
     {
+        $review = $this->reviewService->getReviewById($id);
+
         $this->authorize('update', $review);
 
         $this->reviewService->update($review, $request->validated());
@@ -58,8 +62,10 @@ class ReviewController extends Controller
             ->with('success', 'Review updated successfully.');
     }
 
-    public function destroy(Review $review): RedirectResponse
+    public function destroy(int $id): RedirectResponse
     {
+        $review = $this->reviewService->getReviewById($id);
+
         $this->authorize('delete', $review);
 
         $this->reviewService->delete($review);

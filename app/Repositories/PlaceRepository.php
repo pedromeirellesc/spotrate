@@ -9,7 +9,6 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PlaceRepository implements PlaceRepositoryInterface
 {
-
     use CacheableRepository;
 
     public function __construct(private Place $place)

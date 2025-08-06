@@ -13,6 +13,11 @@ class PlaceService
     {
     }
 
+    public function getPlaceById(int $id): Place
+    {
+        return $this->placeRepository->findById($id);
+    }
+
     public function getAllPlaces(array $requestParams = []): LengthAwarePaginator
     {
         $places = $this->placeRepository->findAll($requestParams);

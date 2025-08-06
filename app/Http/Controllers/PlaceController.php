@@ -58,8 +58,10 @@ class PlaceController extends Controller
         return redirect()->route('places.index');
     }
 
-    public function show(Place $place, Request $request): View
+    public function show(int $id, Request $request): View
     {
+        $place = $this->placeService->getPlaceById($id);
+
         $this->authorize('view', $place);
 
         $place = $this->placeService->show($place);
@@ -71,15 +73,19 @@ class PlaceController extends Controller
         ]);
     }
 
-    public function edit(Place $place): View
+    public function edit(int $id): View
     {
+        $place = $this->placeService->getPlaceById($id);
+
         $this->authorize('update', $place);
 
         return view('places.edit', ['place' => $place]);
     }
 
-    public function update(PlaceRequest $request, Place $place): RedirectResponse
+    public function update(PlaceRequest $request, int $id): RedirectResponse
     {
+        $place = $this->placeService->getPlaceById($id);
+
         $this->authorize('update', $place);
 
         $validatedData = $request->validated();
@@ -89,8 +95,10 @@ class PlaceController extends Controller
         return redirect()->route('places.index');
     }
 
-    public function destroy(Place $place): RedirectResponse
+    public function destroy(int $id): RedirectResponse
     {
+        $place = $this->placeService->getPlaceById($id);
+
         $this->authorize('delete', $place);
 
         $this->placeService->deletePlace($place);

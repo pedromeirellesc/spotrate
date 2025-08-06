@@ -3,6 +3,7 @@
 namespace App\Contracts;
 
 use App\Models\Review;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface ReviewRepositoryInterface
 {
@@ -12,5 +13,7 @@ interface ReviewRepositoryInterface
 
     public function delete(Review $review, array $data = []): bool;
 
-    public function findByPlace(int $placeId, int $perPage = 10);
+    public function findByPlace(int $placeId, int $perPage = 10): LengthAwarePaginator;
+
+    public function findById(int $id): Review;
 }
