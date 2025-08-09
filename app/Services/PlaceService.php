@@ -20,14 +20,12 @@ class PlaceService
 
     public function getAllPlaces(array $requestParams = []): LengthAwarePaginator
     {
-        $places = $this->placeRepository->findAll($requestParams);
-
-        return $places;
+        return $this->placeRepository->findAll($requestParams);
     }
 
     public function createPlace(array $data): Place
     {
-        $userData = [
+        $savedData = [
             'name' => data_get($data, 'name'),
             'description' => data_get($data, 'description'),
             'address' => data_get($data, 'address'),
@@ -37,12 +35,12 @@ class PlaceService
             'created_by' => Request::user()->id,
         ];
 
-        return $this->placeRepository->create($userData);
+        return $this->placeRepository->create($savedData);
     }
 
     public function updatePlace($place, array $data): bool
     {
-        $userData = [
+        $updateData = [
             'name' => data_get($data, 'name'),
             'description' => data_get($data, 'description'),
             'address' => data_get($data, 'address'),
@@ -52,19 +50,19 @@ class PlaceService
             'updated_by' => Request::user()->id,
         ];
 
-        return $this->placeRepository->update($place, $userData);
+        return $this->placeRepository->update($place, $updateData);
     }
 
     public function deletePlace($place): bool
     {
-        $userData = [
+        $data = [
             'deleted_by' => Request::user()->id,
         ];
 
-        return $this->placeRepository->delete($place, $userData);
+        return $this->placeRepository->delete($place, $data);
     }
 
-    public function show(Place $place)
+    public function show(Place $place): Place
     {
         $place = $place->load(['reviews']);
         $place->loadAvg('reviews', 'rating');

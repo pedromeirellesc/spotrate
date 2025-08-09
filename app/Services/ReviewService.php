@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Contracts\ReviewRepositoryInterface;
 use App\Models\Review;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Request;
 
 class ReviewService
@@ -14,7 +15,7 @@ class ReviewService
 
     public function create(array $data): Review
     {
-        $data = [
+        $savedData = [
             'user_id' => data_get($data, 'user_id', Request::user()->id),
             'place_id' => data_get($data, 'place_id'),
             'rating' => data_get($data, 'rating'),
@@ -22,30 +23,28 @@ class ReviewService
             'created_by' => Request::user()->id,
         ];
 
-        return $this->reviewRepository->create($data);
+        return $this->reviewRepository->create($savedData);
     }
 
     public function delete(Review $review, array $data = []): bool
     {
-        $data = [
-            'deleted_by' => Request::user()->id,
-        ];
+        $data['deleted_by'] = Request::user()->id;
 
         return $this->reviewRepository->delete($review, $data);
     }
 
     public function update($review, array $data): bool
     {
-        $data = [
+        $updatedData = [
             'rating' => data_get($data, 'rating'),
             'comment' => data_get($data, 'comment'),
             'updated_by' => Request::user()->id,
         ];
 
-        return $this->reviewRepository->update($review, $data);
+        return $this->reviewRepository->update($review, $updatedData);
     }
 
-    public function getReviewsByPlace(int $placeId, array $requestParams = [])
+    public function getReviewsByPlace(int $placeId, array $requestParams = []): LengthAwarePaginator
     {
         $perPage = $requestParams['per_page'] ?? 5;
 

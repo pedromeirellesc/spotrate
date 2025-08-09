@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +18,7 @@ class PlaceFactory extends Factory
             'instagram' => $this->faker->userName,
             'whatsapp' => $this->faker->phoneNumber,
             'website' => $this->faker->url,
-            'created_by' => User::factory()->create()->id,
+            'created_by' => 1,
             'updated_by' => null,
             'deleted_by' => null,
         ];
