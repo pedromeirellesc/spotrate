@@ -6,7 +6,10 @@ RUN apt-get update && apt-get install -y \
 
 RUN pecl install redis && docker-php-ext-enable redis
 
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
 COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY docker/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN echo "pm.max_children = 50" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "pm.start_servers = 10" >> /usr/local/etc/php-fpm.d/www.conf \

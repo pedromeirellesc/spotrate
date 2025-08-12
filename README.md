@@ -1,5 +1,7 @@
 # SpotRate
 
+[![CI](https://github.com/pedromeirellesc/spotrate/actions/workflows/ci.yaml/badge.svg)](https://github.com/pedromeirellesc/spotrate/actions/workflows/ci.yaml) [![codecov](https://codecov.io/gh/pedromeirellesc/spotrate/graph/badge.svg)](https://codecov.io/gh/pedromeirellesc/spotrate) ![PHP Version](https://img.shields.io/badge/PHP-8.3-blue)
+
 SpotRate é uma aplicação web para avaliação de locais.
 
 - **Laravel**

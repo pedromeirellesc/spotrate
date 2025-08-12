@@ -75,3 +75,45 @@ test('delete a review', function () {
 
     $this->assertSoftDeleted('reviews', ['id' => $review->id]);
 });
+
+test('it displays reviews for a specific place', function () {
+
+    $user = User::factory()->create();
+    $targetPlace = Place::factory()->create();
+    $otherPlace = Place::factory()->create();
+
+    $targetReviews = App\Models\Review::factory()->count(3)->create([
+        'place_id' => $targetPlace->id,
+        'user_id' => $user->id,
+    ]);
+
+    $otherReview = App\Models\Review::factory()->create(['place_id' => $otherPlace->id]);
+
+    $response = $this->actingAs($user)->get(route('places.show', $targetPlace));
+
+    $response->assertOk();
+    $response->assertSee($targetPlace->name);
+
+    foreach ($targetReviews as $review) {
+        $response->assertSee($review->comment);
+    }
+
+    $response->assertDontSee($otherReview->comment);
+});
+
+test('it has correct model relationships', function () {
+    $user = User::factory()->create();
+    $place = Place::factory()->create();
+    $review = App\Models\Review::factory()->create([
+        'user_id' => $user->id,
+        'place_id' => $place->id,
+    ]);
+
+    $this->assertInstanceOf(Illuminate\Database\Eloquent\Relations\BelongsTo::class, $review->place());
+    $this->assertInstanceOf(App\Models\Place::class, $review->place);
+    $this->assertEquals($place->id, $review->place->id);
+
+    $this->assertInstanceOf(Illuminate\Database\Eloquent\Relations\BelongsTo::class, $review->user());
+    $this->assertInstanceOf(App\Models\User::class, $review->user);
+    $this->assertEquals($user->id, $review->user->id);
+});

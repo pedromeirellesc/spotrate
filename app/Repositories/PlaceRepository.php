@@ -6,7 +6,6 @@ use App\Contracts\PlaceRepositoryInterface;
 use App\Models\Place;
 use App\Traits\CacheableRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Log;
 
 class PlaceRepository implements PlaceRepositoryInterface
 {

@@ -47,8 +47,11 @@ jobs:
         run: ./vendor/bin/pint --preset psr12 --test
 
       - name: Run tests
-        run: php artisan test
+        run: php artisan test --coverage-clover=coverage.xml
 
-
-
-
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          fail_ci_if_error: true
