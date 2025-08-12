@@ -6,6 +6,7 @@ use App\Contracts\PlaceRepositoryInterface;
 use App\Models\Place;
 use App\Traits\CacheableRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 class PlaceRepository implements PlaceRepositoryInterface
 {
@@ -20,12 +21,12 @@ class PlaceRepository implements PlaceRepositoryInterface
         return $this->place->create($data);
     }
 
-    public function update($place, array $data): bool
+    public function update(Place $place, array $data): bool
     {
         return $place->update($data);
     }
 
-    public function delete($place, array $data = []): bool
+    public function delete(Place $place, array $data = []): bool
     {
         return $place->delete($data);
     }
@@ -36,7 +37,7 @@ class PlaceRepository implements PlaceRepositoryInterface
 
         return $this->remember($cacheKey, 3600, function () use ($id) {
             return $this->place->withAvg('reviews', 'rating')->findOrFail($id);
-        });
+        }, [Place::class]);
     }
 
     public function findAll(array $requestParams = []): LengthAwarePaginator
@@ -49,7 +50,6 @@ class PlaceRepository implements PlaceRepositoryInterface
             return $this->place->withAvg('reviews', 'rating')
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
-        });
+        }, [Place::class]);
     }
-
 }

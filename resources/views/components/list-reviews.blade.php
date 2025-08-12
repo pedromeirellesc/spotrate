@@ -10,19 +10,17 @@
                 </div>
                 @canany(['update', 'delete'], $review)
                     <div x-data="{ open: false }" class="relative">
-                        <button
-                            class="text-gray-500 hover:text-gray-700 focus:outline-none"
-                            id="review-menu-{{ $review->id }}"
-                            @click="open = !open"
-                            @click.away="open = false"
-                        >
-                            ⋮
+                        <button @click="open = !open"
+                                class="p-2 rounded-full hover:bg-gray-200 focus:outline-none"
+                                id="review-menu-{{ $review->id }}">
+                            <svg class="w-6 h-6 text-gray-600" fill="none"
+                                 stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="2" d="M12 6v.01M12 12v.01M12 18v.01"/>
+                            </svg>
                         </button>
-                        <div
-                            x-show="open"
-                            x-transition
-                            class="absolute right-0 mt-2 w-32 bg-white border rounded shadow z-10"
-                        >
+                        <div x-show="open" @click.away="open = false" x-transition
+                             class="absolute right-0 z-50 mt-2 w-36 bg-white border border-gray-200">
                             @can('update', $review)
                                 <a href="{{ route('reviews.edit', $review) }}"
                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -34,7 +32,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
                                         {{ __('Delete') }}
                                     </button>
                                 </form>
@@ -60,9 +58,9 @@
         </div>
     @empty
         <div class="py-4 text-gray-500 text-center">
-            No reviews yet.
+            {{ __('No reviews yet.') }}
         </div>
-        @endforelse
+    @endforelse
     <div class="p-4">
         {{ $reviews->links() }}
     </div>

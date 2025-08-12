@@ -17,7 +17,6 @@ class ReviewRequest extends FormRequest
             'rating' => ['required', 'integer', 'between:1,5'],
             'comment' => ['nullable', 'string', 'max:1000'],
             'place_id' => ['required', 'exists:places,id'],
-            'user_id' => ['required', 'exists:users,id'],
         ];
     }
 }

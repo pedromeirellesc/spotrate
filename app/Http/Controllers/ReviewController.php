@@ -6,14 +6,11 @@ use App\Http\Requests\ReviewRequest;
 use App\Models\Review;
 use App\Models\Place;
 use App\Services\ReviewService;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class ReviewController extends Controller
 {
-    use AuthorizesRequests;
-
     public function __construct(private ReviewService $reviewService)
     {
     }

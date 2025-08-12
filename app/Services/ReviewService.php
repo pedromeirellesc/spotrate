@@ -16,7 +16,7 @@ class ReviewService
     public function create(array $data): Review
     {
         $savedData = [
-            'user_id' => data_get($data, 'user_id', Request::user()->id),
+            'user_id' => Request::user()->id,
             'place_id' => data_get($data, 'place_id'),
             'rating' => data_get($data, 'rating'),
             'comment' => data_get($data, 'comment'),
@@ -33,7 +33,7 @@ class ReviewService
         return $this->reviewRepository->delete($review, $data);
     }
 
-    public function update($review, array $data): bool
+    public function update(Review $review, array $data): bool
     {
         $updatedData = [
             'rating' => data_get($data, 'rating'),

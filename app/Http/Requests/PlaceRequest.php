@@ -17,9 +17,9 @@ class PlaceRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'address' => ['required', 'string', 'max:255'],
-            'instagram' => ['nullable', 'string', 'max:255'],
-            'whatsapp' => ['nullable', 'string', 'max:20'],
-            'website' => ['nullable', 'string', 'max:255'],
+            'instagram' => ['nullable', 'regex:/^[A-Za-z0-9._]{1,30}$/'],
+            'whatsapp' => ['nullable', 'regex:/^\+?[0-9]{8,20}$/'],
+            'website' => ['nullable', 'url', 'max:255', 'regex:/^(https?:)\/\//i'],
         ];
     }
 }

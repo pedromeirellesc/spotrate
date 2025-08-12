@@ -72,6 +72,6 @@ class ReviewRepository implements ReviewRepositoryInterface
 
         return $this->remember($cacheKey, 3600, function () use ($id) {
             return $this->review->with(['user'])->findOrFail($id);
-        });
+        }, [Review::class]);
     }
 }

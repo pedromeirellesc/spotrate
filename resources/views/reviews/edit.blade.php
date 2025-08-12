@@ -33,7 +33,6 @@
 
             <div>
                 <x-text-input id="place_id" type="hidden" name="place_id" value="{{ $review->place_id }}" />
-                <x-text-input id="user_id" type="hidden" name="user_id" value="{{ $review->user_id }}" />
             </div>
             <div class="flex items-center justify-end">
                 <x-primary-button>

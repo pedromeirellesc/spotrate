@@ -38,7 +38,7 @@ class PlaceService
         return $this->placeRepository->create($savedData);
     }
 
-    public function updatePlace($place, array $data): bool
+    public function updatePlace(Place $place, array $data): bool
     {
         $updateData = [
             'name' => data_get($data, 'name'),
@@ -53,7 +53,7 @@ class PlaceService
         return $this->placeRepository->update($place, $updateData);
     }
 
-    public function deletePlace($place): bool
+    public function deletePlace(Place $place): bool
     {
         $data = [
             'deleted_by' => Request::user()->id,

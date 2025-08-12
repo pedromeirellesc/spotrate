@@ -28,7 +28,6 @@
 
         <div>
             <x-text-input id="place_id" type="hidden" name="place_id" value="{{ $place->id }}" />
-            <x-text-input id="user_id" type="hidden" name="user_id" value="{{ auth()->id() }}" />
         </div>
 
         <div class="flex items-center justify-end">

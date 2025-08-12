@@ -15,7 +15,6 @@ trait CacheableRepository
     {
         Cache::tags($tags)->flush();
     }
-
     protected function makeCacheKey(string $prefix, $params = []): string
     {
         return $prefix . '_' . md5(json_encode($params));

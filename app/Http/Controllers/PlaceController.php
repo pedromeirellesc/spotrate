@@ -6,7 +6,6 @@ use App\Http\Requests\PlaceRequest;
 use App\Models\Place;
 use App\Services\PlaceService;
 use App\Services\ReviewService;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,8 +13,6 @@ use Illuminate\View\View;
 
 class PlaceController extends Controller
 {
-    use AuthorizesRequests;
-
     public function __construct(private PlaceService $placeService, private ReviewService $reviewService)
     {
     }

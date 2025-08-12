@@ -12,6 +12,7 @@ beforeEach(function () {
     $this->service = new ReviewService($this->mockedRepository);
 
     $user = new User();
+    $user->id = 1;
     Request::shouldReceive('user')->andReturn($user);
 });
 
@@ -19,12 +20,11 @@ test('createReview should create a review', function () {
 
     $inputData = [
         'place_id' => 1,
-        'user_id' => 1,
         'rating' => 5,
         'comment' => 'Great place!',
     ];
 
-    $expectedData = $inputData + ['created_by' => Request::user()->id];
+    $expectedData = $inputData + ['user_id' => Request::user()->id, 'created_by' => Request::user()->id];
 
     $fakeReview = (new Review())->forceFill($expectedData);
 
@@ -38,7 +38,7 @@ test('createReview should create a review', function () {
 
     expect($result)->toBeInstanceOf(Review::class);
     expect($result->place_id)->toBe($inputData['place_id']);
-    expect($result->user_id)->toBe($inputData['user_id']);
+    expect($result->user_id)->toBe(Request::user()->id);
     expect($result->rating)->toBe($inputData['rating']);
     expect($result->comment)->toBe($inputData['comment']);
 });

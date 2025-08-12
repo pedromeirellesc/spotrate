@@ -69,7 +69,7 @@
             </button>
 
             <div class="p-6">
-                <h2 class="text-lg font-semibold text-secondary dark:text-secondary">{{ $title }}</h2>
+                <h2 class="text-lg font-semibold text-secondary dark:text-secondary">{{ __($title) }}</h2>
                 <div class="mt-4">
                     {{ $slot }}
                 </div>

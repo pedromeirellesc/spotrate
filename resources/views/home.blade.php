@@ -4,7 +4,7 @@
             <h1 class="heading-main">{{ __('Welcome to SpotRate') }}</h1>
             <p class="subtitle-main">{{ __('Start now your journey rating places.') }}</p>
             <x-button-link class="btn-main mt-8" href="{{ route('reviews.select-place') }}">
-                {{ __('Rating places') }}
+                {{ __('Rate places') }}
             </x-button-link>
         </div>
     </div>
