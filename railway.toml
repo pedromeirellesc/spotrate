@@ -1,0 +1,18 @@
+[build]
+builder = "NIXPACKS"
+
+[build.setup]
+nixPkgs = [
+  "php83",
+  "php83Extensions.mbstring",
+  "php83Extensions.pdo_mysql",
+  "php83Extensions.fileinfo",
+  "nodejs_20",
+  "composer"
+]
+
+[build.buildCommand]
+buildCommand = "composer install --no-dev --optimize-autoloader && chmod +x build-app.sh && bash build-app.sh"
+
+[deploy]
+startCommand = "php artisan serve --host=0.0.0.0 --port=$PORT"
