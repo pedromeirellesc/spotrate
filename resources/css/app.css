@@ -4,6 +4,7 @@
 
 @layer base {
     html {
+        --navbar-height: 64px;
         font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
         background-color: #161c1f;
         color: #edecec;
@@ -15,44 +16,43 @@
 }
 
 @layer components {
-  .btn-primary {
-    @apply bg-primary text-white px-4 py-2 rounded transition hover:bg-primary-dark font-medium;
-  }
+    .btn-primary {
+        @apply bg-primary text-white px-4 py-2 rounded transition hover:bg-primary-dark font-medium;
+    }
 
-  .btn-secondary {
-    @apply bg-gray-700 text-white px-4 py-2 rounded transition hover:bg-gray-600 font-medium;
-  }
+    .btn-secondary {
+        @apply bg-gray-700 text-white px-4 py-2 rounded transition hover:bg-gray-600 font-medium;
+    }
 
-  .heading-main {
-    @apply text-4xl font-bold mb-4 text-white;
-  }
+    .heading-main {
+        @apply text-4xl font-bold mb-4 text-white;
+    }
 
-  .subtitle-main {
-    @apply text-lg mb-8 text-gray-300;
-  }
+    .subtitle-main {
+        @apply text-lg mb-8 text-gray-300;
+    }
 
-  .card {
-    @apply bg-gray-800 text-gray-100 rounded-lg shadow p-8;
-  }
+    .card {
+        @apply bg-gray-800 text-gray-100 rounded-lg shadow p-8;
+    }
 
-  .btn-main {
-    @apply text-white px-6 py-3 rounded font-medium text-lg shadow transition;
-  }
+    .btn-main {
+        @apply text-white px-6 py-3 rounded font-medium text-lg shadow transition;
+    }
 }
 
 @layer utilities {
+    .container-responsive {
+        @apply w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+    }
 
-  .container-responsive {
-    @apply w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
+    .bg-primary {
+        background-color: #052722;
+    }
 
-  .bg-primary {
-    background-color: #052722;
-  }
-
-  .bg-primary-dark {
-    background-color: #edecec;
-  }
+    .bg-primary-dark {
+        background-color: #edecec;
+    }
 
     .text-primary {
         color: #000000;
@@ -71,4 +71,38 @@
         background-color: #edecec;
     }
 
+    .home-wrapper {
+        min-height: calc(99vh - var(--navbar-height));
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+    }
+
+    .home-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 2rem;
+        margin: 0;
+    }
+
+    .heading-main {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .subtitle-main {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+    }
+
+    .btn-main {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+    }
 }

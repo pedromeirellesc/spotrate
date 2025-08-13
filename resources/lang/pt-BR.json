@@ -23,8 +23,8 @@
     "Email Password Reset Link": "Enviar link de redefinição de senha",
     "Remember me": "Lembrar de mim",
     "Forgot your password?": "Esqueceu sua senha?",
-    "Log in": "Entrar",
-    "Register": "Registrar",
+    "Log In": "Entrar",
+    "Register": "Cadastrar",
     "Already registered?": "Já possui cadastro?",
     "Confirm Password": "Confirmar Senha",
     "Reset Password": "Redefinir Senha",
@@ -35,7 +35,7 @@
     "Places": "Locais",
     "Profile": "Perfil",
     "Rate this place": "Avaliar este local",
-    "Add Review": "Adicionar Avaliação",
+    "Add Review": "Avaliar",
     "Reviews": "Avaliações",
     "Create place": "Criar Local",
     "Dashboard": "Painel",
@@ -73,6 +73,7 @@
     "Review": "Avaliação",
     "Created": "Cadastro",
     "No reviews yet.": "Nenhuma avaliação ainda.",
-    "Create Review": "Criar Avaliação",
-    "Save Changes": "Salvar Alterações"
+    "Create Review": "Avaliar",
+    "Save Changes": "Salvar Alterações",
+    "This action is unauthorized.": "Esta ação não é autorizada."
 }

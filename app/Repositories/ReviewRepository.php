@@ -71,7 +71,10 @@ class ReviewRepository implements ReviewRepositoryInterface
         $cacheKey = $this->makeCacheKey('review', $id);
 
         return $this->remember($cacheKey, 3600, function () use ($id) {
-            return $this->review->with(['user'])->findOrFail($id);
+            return $this->review->with([
+                'user',
+                'place' => fn ($query) => $query->withAvg('reviews', 'rating'),
+            ])->findOrFail($id);
         }, [Review::class]);
     }
 }

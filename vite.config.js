@@ -9,11 +9,10 @@ export default defineConfig({
         }),
     ],
     server: {
-        host: '0.0.0.0',
+        host: 'localhost',
         port: 5173,
         hmr: {
-            host: 'host.docker.internal',
-            port: 5173,
+            host: 'localhost'
         },
         watch: {
             usePolling: true,
