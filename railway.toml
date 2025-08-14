@@ -3,20 +3,20 @@ builder = "NIXPACKS"
 
 [phases.setup]
 nixPkgs = [
-  "php83",
-  "php83Extensions.mbstring",
-  "php83Extensions.pdo_mysql",
-  "php83Extensions.fileinfo",
-  "nodejs_20",
-  "composer"
+    "php83",
+    "php83Extensions.mbstring",
+    "php83Extensions.pdo_mysql",
+    "php83Extensions.fileinfo",
+    "nodejs_20",
+    "composer"
 ]
 
 [phases.build]
 cmds = [
-  "composer install --no-dev --optimize-autoloader",
-  "chmod +x build-app.sh",
-  "./build-app.sh"
+    "composer install --no-dev --optimize-autoloader",
+    "chmod +x build-app.sh",
+    "./build-app.sh"
 ]
 
 [start]
-cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
+cmd = "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"
