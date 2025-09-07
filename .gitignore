@@ -20,6 +20,8 @@
 /storage/*.key
 /storage/pail
 /vendor
+github-deploy-key
+github-deploy-key.pub
 Homestead.json
 Homestead.yaml
 Thumbs.db

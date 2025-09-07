@@ -22,7 +22,7 @@
             <x-register-modal name="register-modal" title="Register" />
         @endguest
 
-        <div class="container-responsive">
+        <div class="container mx-auto px-4 w-full max-w-7xl">
             {{ $slot }}
         </div>
     </main>
