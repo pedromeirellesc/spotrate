@@ -1,0 +1,40 @@
+name: Continuous Deployment
+on:
+  workflow_run:
+    workflows: ['Continuous Integration']
+    types:
+      - completed
+    branches:
+      - main
+    workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_SSH_HOST }}
+          username: ${{ secrets.VPS_SSH_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            git config --global --add safe.directory /var/www/spotrate
+            cd /var/www/spotrate
+            php artisan down
+            git pull origin main
+            echo "${{ secrets.VPS_ENV_FILE }}" | base64 -d > .env
+            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+            npm install
+            npm run build
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            sudo systemctl restart php8.2-fpm
+            chown -R www-data:www-data .
+            find . -type d -exec chmod 755 {} \;
+            find . -type f -exec chmod 644 {} \;
+            php artisan up
