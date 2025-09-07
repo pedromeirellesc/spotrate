@@ -48,7 +48,7 @@ SpotRate é uma aplicação web para avaliação de locais.
 
 7.  **Instale as dependências do Node:**
     ```bash
-    docker-compose exec node npm install
+    node npm install
     ```
 
 ### Acessar a aplicação
