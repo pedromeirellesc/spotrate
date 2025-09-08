@@ -16,162 +16,170 @@ beforeEach(function () {
     Request::shouldReceive('user')->andReturn($user);
 });
 
-test('getPlaceById should return a place', function () {
-    $placeId = 1;
+describe('getPlaceById tests', function () {
+    it('should return a place', function () {
+        $placeId = 1;
 
-    $fakePlace = new Place();
-    $fakePlace->id = $placeId;
-    $fakePlace->name = 'Fake Place';
+        $fakePlace = new Place();
+        $fakePlace->id = $placeId;
+        $fakePlace->name = 'Fake Place';
 
-    $this->mockedRepository
-        ->shouldReceive('findById')
-        ->once()
-        ->with($placeId)
-        ->andReturn($fakePlace);
+        $this->mockedRepository
+            ->shouldReceive('findById')
+            ->once()
+            ->with($placeId)
+            ->andReturn($fakePlace);
 
-    $result = $this->service->getPlaceById($placeId);
+        $result = $this->service->getPlaceById($placeId);
 
-    expect($result)->toBeInstanceOf(Place::class);
-    expect($result->id)->toBe($fakePlace->id);
-    expect($result->name)->toBe($fakePlace->name);
+        expect($result)->toBeInstanceOf(Place::class);
+        expect($result->id)->toBe($fakePlace->id);
+        expect($result->name)->toBe($fakePlace->name);
+    });
+
+    it('should throw an exception if the place does not exist', function () {
+        $placeId = 999;
+
+        $this->mockedRepository
+            ->shouldReceive('findById')
+            ->once()
+            ->with($placeId)
+            ->andThrow(ModelNotFoundException::class);
+
+        $this->expectException(ModelNotFoundException::class);
+
+        $this->service->getPlaceById($placeId);
+    });
 });
 
-test('getPlaceId should throw an exception if the place does not exist ', function () {
-    $placeId = 999;
+describe('getAllPlaces tests', function () {
+    it('should return all places', function () {
+        $place1 = new Place(['id' => 1, 'name' => 'Place 1']);
+        $place2 = new Place(['id' => 2, 'name' => 'Place 2']);
 
-    $this->mockedRepository
-        ->shouldReceive('findById')
-        ->once()
-        ->with($placeId)
-        ->andThrow(ModelNotFoundException::class);
+        $items = collect([$place1, $place2]);
+        $total = $items->count();
+        $perPage = 10;
+        $currentPage = 1;
+        $path = '/';
 
-    $this->expectException(ModelNotFoundException::class);
+        $paginator = new LengthAwarePaginator($items, $total, $perPage, $currentPage, [
+            'path' => $path,
+        ]);
 
-    $this->service->getPlaceById($placeId);
+        $this->mockedRepository
+            ->shouldReceive('findAll')
+            ->once()
+            ->andReturn($paginator);
+
+        $result = $this->service->getAllPlaces();
+
+        expect($result)->toBeInstanceOf(LengthAwarePaginator::class);
+        expect($result->count())->toBe($items->count());
+    });
 });
 
-test('getAllPlaces should return all places', function () {
+describe('createPlace tests', function () {
+    it('should create a place successfully', function () {
+        $inputData = [
+            'name' => 'Place',
+            'description' => 'A description',
+            'address' => 'Address',
+            'instagram' => '@place',
+            'whatsapp' => '11999999999',
+            'website' => 'https://place.com',
+        ];
 
-    $place1 = new Place(['id' => 1, 'name' => 'Place 1']);
-    $place2 = new Place(['id' => 2, 'name' => 'Place 2']);
+        $expectedData = $inputData + ['created_by' => Request::user()->id];
 
-    $items = collect([$place1, $place2]);
-    $total = $items->count();
-    $perPage = 10;
-    $currentPage = 1;
-    $path = '/';
+        $fakePlace = (new Place())->forceFill($expectedData);
 
-    $paginator = new LengthAwarePaginator($items, $total, $perPage, $currentPage, [
-        'path' => $path,
-    ]);
+        $this->mockedRepository
+            ->shouldReceive('create')
+            ->once()
+            ->with($expectedData)
+            ->andReturn($fakePlace);
 
-    $this->mockedRepository
-        ->shouldReceive('findAll')
-        ->once()
-        ->andReturn($paginator);
+        $result = $this->service->createPlace($inputData);
 
-    $result = $this->service->getAllPlaces();
-
-    expect($result)->toBeInstanceOf(LengthAwarePaginator::class);
-    expect($result->count())->toBe($items->count());
+        expect($result)->toBeInstanceOf(Place::class);
+        expect($result->name)->toBe($inputData['name']);
+        expect($result->created_by)->toBe(Request::user()->id);
+    });
 });
 
-test('createPlace should create a place', function () {
+describe('updatePlace tests', function () {
+    it('should update a place successfully', function () {
+        $place = new Place();
+        $place->name = 'Place';
+        $place->description = 'A description';
 
-    $inputData = [
-        'name' => 'Place',
-        'description' => 'A description',
-        'address' => 'Address',
-        'instagram' => '@place',
-        'whatsapp' => '11999999999',
-        'website' => 'https://place.com',
-    ];
+        $inputData = [
+            'name' => 'Updated Place',
+            'description' => 'A updated description',
+            'address' => 'Address',
+            'instagram' => '@place',
+            'whatsapp' => '11999999999',
+            'website' => 'https://place.com',
+        ];
 
-    $expectedData = $inputData + ['created_by' => Request::user()->id];
+        $userData = $inputData + ['updated_by' => Request::user()->id];
 
-    $fakePlace = (new Place())->forceFill($expectedData);
+        $this->mockedRepository
+            ->shouldReceive('update')
+            ->once()
+            ->with($place, $userData)
+            ->andReturn(true);
 
-    $this->mockedRepository
-        ->shouldReceive('create')
-        ->once()
-        ->with($expectedData)
-        ->andReturn($fakePlace);
+        $result = $this->service->updatePlace($place, $inputData);
 
-    $result = $this->service->createPlace($inputData);
-
-    expect($result)->toBeInstanceOf(Place::class);
-    expect($result->name)->toBe($inputData['name']);
-    expect($result->created_by)->toBe(Request::user()->id);
+        expect($result)->toBeTrue();
+    });
 });
 
-test('updatePlace should update a place', function () {
+describe('deletePlace tests', function () {
+    it('should delete a place successfully', function () {
+        $place = new Place();
+        $place->name = 'Place';
+        $place->description = 'A description';
 
-    $place = new Place();
-    $place->name = 'Place';
-    $place->description = 'A description';
+        $userData = [
+            'deleted_by' => Request::user()->id,
+        ];
 
-    $inputData = [
-        'name' => 'Updated Place',
-        'description' => 'A updated description',
-        'address' => 'Address',
-        'instagram' => '@place',
-        'whatsapp' => '11999999999',
-        'website' => 'https://place.com',
-    ];
+        $this->mockedRepository
+            ->shouldReceive('delete')
+            ->once()
+            ->with($place, $userData)
+            ->andReturn(true);
 
-    $userData = $inputData + ['updated_by' => Request::user()->id];
+        $result = $this->service->deletePlace($place);
 
-    $this->mockedRepository
-        ->shouldReceive('update')
-        ->once()
-        ->with($place, $userData)
-        ->andReturn(true);
-
-    $result = $this->service->updatePlace($place, $inputData);
-
-    expect($result)->toBeTrue();
+        expect($result)->toBeTrue();
+    });
 });
 
-test('deletePlace should delete a place', function () {
+describe('show places tests', function () {
+    it('should return a place with loaded relationships', function () {
+        $place = Mockery::mock(Place::class)->makePartial();
 
-    $place = new Place();
-    $place->name = 'Place';
-    $place->description = 'A description';
+        $place->name = 'Place';
+        $place->description = 'A description';
 
-    $userData = [
-        'deleted_by' => Request::user()->id,
-    ];
+        $place->shouldReceive('load')
+            ->once()
+            ->with(['reviews'])
+            ->andReturnSelf();
 
-    $this->mockedRepository
-        ->shouldReceive('delete')
-        ->once()
-        ->with($place, $userData)
-        ->andReturn(true);
+        $place->shouldReceive('loadAvg')
+            ->once()
+            ->with('reviews', 'rating')
+            ->andReturnSelf();
 
-    $result = $this->service->deletePlace($place);
+        $result = $this->service->show($place);
 
-    expect($result)->toBeTrue();
-});
-
-test('show should return a place with loaded relationships', function () {
-    $place = Mockery::mock(Place::class)->makePartial();
-
-    $place->name = 'Place';
-    $place->description = 'A description';
-
-    $place->shouldReceive('load')
-        ->once()
-        ->with(['reviews'])
-        ->andReturnSelf();
-
-    $place->shouldReceive('loadAvg')
-        ->once()
-        ->with('reviews', 'rating')
-        ->andReturnSelf();
-
-    $result = $this->service->show($place);
-
-    expect($result)->toBeInstanceOf(Place::class);
-    expect($result->name)->toBe($place->name);
-    expect($result->description)->toBe($place->description);
+        expect($result)->toBeInstanceOf(Place::class);
+        expect($result->name)->toBe($place->name);
+        expect($result->description)->toBe($place->description);
+    });
 });

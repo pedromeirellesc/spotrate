@@ -16,94 +16,99 @@ beforeEach(function () {
     Request::shouldReceive('user')->andReturn($user);
 });
 
-test('createReview should create a review', function () {
+describe('createReview tests', function () {
+    it('should create a review successfully', function () {
+        $inputData = [
+            'place_id' => 1,
+            'rating' => 5,
+            'comment' => 'Great place!',
+        ];
 
-    $inputData = [
-        'place_id' => 1,
-        'rating' => 5,
-        'comment' => 'Great place!',
-    ];
+        $expectedData = $inputData + ['user_id' => Request::user()->id, 'created_by' => Request::user()->id];
 
-    $expectedData = $inputData + ['user_id' => Request::user()->id, 'created_by' => Request::user()->id];
+        $fakeReview = (new Review())->forceFill($expectedData);
 
-    $fakeReview = (new Review())->forceFill($expectedData);
+        $this->mockedRepository
+            ->shouldReceive('create')
+            ->once()
+            ->with($expectedData)
+            ->andReturn($fakeReview);
 
-    $this->mockedRepository
-        ->shouldReceive('create')
-        ->once()
-        ->with($expectedData)
-        ->andReturn($fakeReview);
+        $result = $this->service->create($inputData);
 
-    $result = $this->service->create($inputData);
-
-    expect($result)->toBeInstanceOf(Review::class);
-    expect($result->place_id)->toBe($inputData['place_id']);
-    expect($result->user_id)->toBe(Request::user()->id);
-    expect($result->rating)->toBe($inputData['rating']);
-    expect($result->comment)->toBe($inputData['comment']);
+        expect($result)->toBeInstanceOf(Review::class);
+        expect($result->place_id)->toBe($inputData['place_id']);
+        expect($result->user_id)->toBe(Request::user()->id);
+        expect($result->rating)->toBe($inputData['rating']);
+        expect($result->comment)->toBe($inputData['comment']);
+    });
 });
 
-test('deleteReview should delete a review', function () {
+describe('deleteReview tests', function () {
+    it('should delete a review successfully', function () {
+        $review = Mockery::mock(Review::class)->makePartial();
 
-    $review = Mockery::mock(Review::class)->makePartial();
+        $this->mockedRepository
+            ->shouldReceive('delete')
+            ->once()
+            ->with($review, ['deleted_by' => Request::user()->id])
+            ->andReturn(true);
 
-    $this->mockedRepository
-        ->shouldReceive('delete')
-        ->once()
-        ->with($review, ['deleted_by' => Request::user()->id])
-        ->andReturn(true);
+        $result = $this->service->delete($review);
 
-    $result = $this->service->delete($review);
-
-    expect($result)->toBeTrue();
+        expect($result)->toBeTrue();
+    });
 });
 
-test('updateReview should update a review', function () {
+describe('updateReview tests', function () {
+    it('should update a review successfully', function () {
+        $review = Mockery::mock(Review::class)->makePartial();
 
-    $review = Mockery::mock(Review::class)->makePartial();
+        $this->mockedRepository
+            ->shouldReceive('update')
+            ->once()
+            ->with($review, [
+                'rating' => null,
+                'comment' => null,
+                'updated_by' => Request::user()->id,
+            ])
+            ->andReturn(true);
 
-    $this->mockedRepository
-        ->shouldReceive('update')
-        ->once()
-        ->with($review, [
-            'rating' => null,
-            'comment' => null,
-            'updated_by' => Request::user()->id,
-        ])
-        ->andReturn(true);
+        $result = $this->service->update($review, []);
 
-    $result = $this->service->update($review, []);
-
-    expect($result)->toBeTrue();
+        expect($result)->toBeTrue();
+    });
 });
 
-test('getReviewsByPlace should return reviews by place', function () {
+describe('getReviewsByPlace tests', function () {
+    it('should return reviews by place', function () {
+        $placeId = 1;
+        $perPage = 5;
 
-    $placeId = 1;
-    $perPage = 5;
+        $this->mockedRepository
+            ->shouldReceive('findByPlace')
+            ->once()
+            ->with($placeId, $perPage)
+            ->andReturn(new LengthAwarePaginator([], 0, $perPage, 1));
 
-    $this->mockedRepository
-        ->shouldReceive('findByPlace')
-        ->once()
-        ->with($placeId, $perPage)
-        ->andReturn(new LengthAwarePaginator([], 0, $perPage, 1));
+        $result = $this->service->getReviewsByPlace($placeId);
 
-    $result = $this->service->getReviewsByPlace($placeId);
-
-    expect($result)->toBeInstanceOf(LengthAwarePaginator::class);
+        expect($result)->toBeInstanceOf(LengthAwarePaginator::class);
+    });
 });
 
-test('getReviewById should return a review', function () {
+describe('getReviewById tests', function () {
+    it('should return a review', function () {
+        $reviewId = 1;
 
-    $reviewId = 1;
+        $this->mockedRepository
+            ->shouldReceive('findById')
+            ->once()
+            ->with($reviewId)
+            ->andReturn(new Review());
 
-    $this->mockedRepository
-        ->shouldReceive('findById')
-        ->once()
-        ->with($reviewId)
-        ->andReturn(new Review());
+        $result = $this->service->getReviewById($reviewId);
 
-    $result = $this->service->getReviewById($reviewId);
-
-    expect($result)->toBeInstanceOf(Review::class);
+        expect($result)->toBeInstanceOf(Review::class);
+    });
 });

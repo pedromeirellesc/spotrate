@@ -3,120 +3,131 @@
 use App\Models\Place;
 use App\Models\User;
 
-test('get places', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+describe('get places tests', function () {
+    it('should return successfully status code', function () {
+        $user = User::factory()->create(['role' => 'admin']);
 
-    $this->actingAs($user);
+        $this->actingAs($user);
 
-    $response = $this->get('/places');
+        $response = $this->get('/places');
 
-    $response->assertStatus(200);
+        $response->assertStatus(200);
+    });
 });
 
-test('get create place', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+describe('get places create tests', function () {
+    it('should return successfully status code', function () {
+        $user = User::factory()->create(['role' => 'admin']);
 
-    $this->actingAs($user);
+        $this->actingAs($user);
 
-    $response = $this->get('/places/create');
+        $response = $this->get('/places/create');
 
-    $response->assertStatus(200);
+        $response->assertStatus(200);
+    });
 });
 
-test('create place as a admin', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+describe('post places create', function () {
+    it('post as admin should create a place successfully', function () {
+        $user = User::factory()->create(['role' => 'admin']);
 
-    $this->actingAs($user);
+        $this->actingAs($user);
 
-    $response = $this->post('/places', [
-        'name' => 'Test Place',
-        'description' => 'This is a test place.',
-        'location' => 'Test Location',
-        'address' => '123 Test St',
-    ]);
+        $response = $this->post('/places', [
+            'name' => 'Test Place',
+            'description' => 'This is a test place.',
+            'location' => 'Test Location',
+            'address' => '123 Test St',
+        ]);
 
-    $response->assertRedirect('/places');
-    $this->assertDatabaseHas('places', ['name' => 'Test Place', 'created_by' => $user->id]);
+        $response->assertRedirect('/places');
+        $this->assertDatabaseHas('places', ['name' => 'Test Place', 'created_by' => $user->id]);
+    });
+
+    it('post with empty fields should return validation errors', function () {
+        $user = User::factory()->create(['role' => 'admin']);
+
+        $this->actingAs($user);
+
+        $response = $this->post('/places', [
+            'name' => '',
+            'address' => '',
+        ]);
+
+        $response->assertSessionHasErrors(['name', 'address']);
+    });
 });
 
-test('get edit place as a admin', function () {
-    $user = User::factory()->create(['role' => 'admin']);
-    $place = Place::factory()->create();
+describe('get places edit', function () {
+    it('get as admin should return successfully status code', function () {
+        $user = User::factory()->create(['role' => 'admin']);
+        $place = Place::factory()->create();
 
-    $this->actingAs($user);
+        $this->actingAs($user);
 
-    $response = $this->get("/places/edit/{$place->id}");
+        $response = $this->get("/places/edit/{$place->id}");
 
-    $response->assertStatus(200);
+        $response->assertStatus(200);
+    });
 });
 
-test('update place as a admin', function () {
-    $user = User::factory()->create(['role' => 'admin']);
-    $place = Place::factory()->create();
+describe('put places update', function () {
+    it('put place as a admin should update successfully', function () {
+        $user = User::factory()->create(['role' => 'admin']);
+        $place = Place::factory()->create();
 
-    $this->actingAs($user);
+        $this->actingAs($user);
 
-    $response = $this->put("/places/{$place->id}", [
-        'name' => 'Updated Place',
-        'description' => 'This is an updated place.',
-        'location' => 'Updated Location',
-        'address' => '456 Updated St',
-    ]);
+        $response = $this->put("/places/{$place->id}", [
+            'name' => 'Updated Place',
+            'description' => 'This is an updated place.',
+            'location' => 'Updated Location',
+            'address' => '456 Updated St',
+        ]);
 
-    $response->assertRedirect('/places');
-    $this->assertDatabaseHas('places', ['name' => 'Updated Place', 'updated_by' => $user->id]);
+        $response->assertRedirect('/places');
+        $this->assertDatabaseHas('places', ['name' => 'Updated Place', 'updated_by' => $user->id]);
+    });
+
+    it('put as non-admin user or non-creator should return forbidden status code', function () {
+        $user = User::factory()->create(['role' => 'user']);
+        $place = Place::factory()->create(['created_by' => User::factory()->create()->id]);
+
+        $this->actingAs($user);
+
+        $response = $this->put("/places/{$place->id}", [
+            'name' => 'Unauthorized Update',
+            'description' => 'This update should not be allowed.',
+            'address' => 'Unauthorized Address',
+        ]);
+
+        $response->assertForbidden();
+        $this->assertDatabaseMissing('places', ['name' => 'Unauthorized Update']);
+    });
 });
 
-test('delete place as a admin', function () {
-    $user = User::factory()->create(['role' => 'admin']);
-    $place = Place::factory()->create();
+describe('delete place', function () {
+    it('delete as admin should delete successfully', function () {
+        $user = User::factory()->create(['role' => 'admin']);
+        $place = Place::factory()->create();
 
-    $this->actingAs($user);
+        $this->actingAs($user);
 
-    $response = $this->delete("/places/{$place->id}");
+        $response = $this->delete("/places/{$place->id}");
 
-    $response->assertRedirect('/places');
+        $response->assertRedirect('/places');
 
-    $this->assertSoftDeleted('places', ['id' => $place->id]);
-});
+        $this->assertSoftDeleted('places', ['id' => $place->id]);
+    });
+    it('delete as non-admin user or non-creator should return forbidden status code', function () {
+        $user = User::factory()->create(['role' => 'user']);
+        $place = Place::factory()->create(['created_by' => User::factory()->create()->id]);
 
-test('non-admin user or non-creator cannot update a place', function () {
-    $user = User::factory()->create(['role' => 'user']);
-    $place = Place::factory()->create(['created_by' => User::factory()->create()->id]);
+        $this->actingAs($user);
 
-    $this->actingAs($user);
+        $response = $this->delete("/places/{$place->id}");
 
-    $response = $this->put("/places/{$place->id}", [
-        'name' => 'Unauthorized Update',
-        'description' => 'This update should not be allowed.',
-        'address' => 'Unauthorized Address',
-    ]);
-
-    $response->assertForbidden();
-    $this->assertDatabaseMissing('places', ['name' => 'Unauthorized Update']);
-});
-
-test('non-admin user or non-creator cannot delete a place', function () {
-    $user = User::factory()->create(['role' => 'user']);
-    $place = Place::factory()->create(['created_by' => User::factory()->create()->id]);
-
-    $this->actingAs($user);
-
-    $response = $this->delete("/places/{$place->id}");
-
-    $response->assertForbidden();
-    $this->assertDatabaseHas('places', ['id' => $place->id]);
-});
-
-test('validation errors when creating a place', function () {
-    $user = User::factory()->create(['role' => 'admin']);
-
-    $this->actingAs($user);
-
-    $response = $this->post('/places', [
-        'name' => '',
-        'address' => '',
-    ]);
-
-    $response->assertSessionHasErrors(['name', 'address']);
+        $response->assertForbidden();
+        $this->assertDatabaseHas('places', ['id' => $place->id]);
+    });
 });
