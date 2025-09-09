@@ -21,20 +21,20 @@ jobs:
           username: ${{ secrets.VPS_SSH_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            git config --global --add safe.directory /var/www/spotrate
             cd /var/www/spotrate
             php artisan down
+            git config --global --add safe.directory /var/www/spotrate
             git pull origin main
             echo "${{ secrets.VPS_ENV_FILE }}" | base64 -d > .env
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
             npm install
             npm run build
+            sudo chown -R www-data:www-data .
+            sudo find . -type d -exec chmod 755 {} \;
+            sudo find . -type f -exec chmod 644 {} \;
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
             sudo systemctl restart php8.2-fpm
-            chown -R www-data:www-data .
-            find . -type d -exec chmod 755 {} \;
-            find . -type f -exec chmod 644 {} \;
             php artisan up

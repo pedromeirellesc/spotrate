@@ -119,7 +119,7 @@ describe('delete place', function () {
 
         $this->assertSoftDeleted('places', ['id' => $place->id]);
     });
-    it('delete as non-admin user or non-creator should return forbidden status code', function () {
+    it('delete as non-admin or non-creator user should return forbidden status code', function () {
         $user = User::factory()->create(['role' => 'user']);
         $place = Place::factory()->create(['created_by' => User::factory()->create()->id]);
 

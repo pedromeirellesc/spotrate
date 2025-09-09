@@ -33,8 +33,8 @@
                                         <td class="hidden md:table-cell px-3 py-4 sm:px-6 text-sm text-gray-500">
                                             {{ $place->created_at->format('d/m/Y H:i') }}
                                         </td>
-                                        <td class="px-3 py-4 sm:px-6 relative">
-                                        <div x-data="{ open: false }" class="relative">
+                                        <td class="px-3 py-4 sm:px-6">
+                                        <div x-data="{ open: false }">
                                             <button @click="open = !open"
                                                 class="inline-flex items-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                                 <span class="sr-only">Open options</span>
